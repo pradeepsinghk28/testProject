@@ -39,7 +39,7 @@ jobs:
 
       # run tests!
       - run: yarn run build
-test:
+  test:
     docker:
       - image: circleci/node:8.11.2-browsers
 
