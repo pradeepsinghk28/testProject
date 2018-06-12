@@ -38,4 +38,32 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
+      - run: yarn run build
+test:
+    docker:
+      - image: circleci/node:8.11.2-browsers
+
+    working_directory: ~/testProject
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
       - run: yarn run test:ci
+
+workflows:
+  version: 2
+  Build_and_Test:
+    jobs:
+      - build
+      - test
